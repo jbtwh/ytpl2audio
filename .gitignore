@@ -1,0 +1,15 @@
+.env
+.docker_build/
+/classes/
+/.lein-deps-sum
+/.lein-failures
+/.lein-env
+/checkouts
+/.env
+/target
+/.lein-repl-history
+/.nrepl-port
+/.idea
+/ytpl2audio.iml
+ytpl2audio.exe
+

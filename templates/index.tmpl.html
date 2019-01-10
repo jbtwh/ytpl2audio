@@ -1,0 +1,88 @@
+<html>
+  <head>
+	<link rel="stylesheet" type="text/css" href="/static/main.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	
+</head>
+<body>
+ <audio id="audio" preload="auto" tabindex="0" controls="" type="audio/mpeg">
+  Sorry, your browser does not support HTML5 audio.
+</audio>
+<ul id="playlist">
+{{range .tracks }}
+  <li><a href="{{.Url}}">{{.Title}}</a></li>
+{{end}}
+</ul>
+  <script type="text/javascript">
+   playList();
+
+function playList() {
+  var audio;
+  var playlist;
+  var tracks;
+  var current;
+  var elems;
+  current = 0;
+  audio = document.getElementsByTagName('audio');
+  playlist = document.querySelector('#playlist');
+  tracks = document.querySelectorAll('li a');
+  len = tracks.length;
+  [].forEach.call(document.querySelectorAll('a'), function(el) {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      link = this;
+      current = indexInParent(link.parentElement)
+      run(link, audio[0]);
+    })
+  });
+
+  function indexInParent(node) {
+    var children = node.parentNode.childNodes;
+    var num = 0;
+    for (var i = 0; i < children.length; i++) {
+      if (children[i] == node) return num;
+      if (children[i].nodeType == 1) num++;
+    }
+    return -1;
+  }
+  audio[0].addEventListener('ended', function(e) {
+    current++;
+    elems = document.querySelector(".active");
+    if (current == len) {
+      current = 0;
+      link = document.querySelectorAll('a')[0];
+      if (elems !== null) {
+        elems.classList.remove("active");
+      }
+      link.className = "active";
+     } else {
+      link = document.querySelectorAll('a')[current];
+      if (elems !== null) {
+        elems.classList.remove("active");
+      }
+      link.className = "active";
+    }
+    run(link, this);
+  });
+
+  function run(link, player) {
+    player.src = link.getAttribute('href');
+    audio[0].load();
+    audio[0].play();
+  }
+
+  document.getElementById('playlist').addEventListener('click', function(e) {
+    elems = document.querySelector(".active");
+    if (elems !== null) {
+      elems.classList.remove("active");
+    }
+    e.target.className = "active";
+  }, false);
+
+  link = document.querySelectorAll('a')[0].click ();
+}
+
+</script>
+
+</body>
+</html>
